@@ -20,3 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/admin', 'PostController@admin')->name('admin');
+Route::get('/manager', 'PostController@manager')->name('manager');
+Route::get('/user', 'PostController@user')->name('user');
+Route::get('/others', 'PostController@others')->name('others');
