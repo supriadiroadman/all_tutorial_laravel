@@ -25,3 +25,9 @@ Route::get('/admin', 'PostController@admin')->name('admin');
 Route::get('/manager', 'PostController@manager')->name('manager');
 Route::get('/user', 'PostController@user')->name('user');
 Route::get('/others', 'PostController@others')->name('others');
+
+
+Route::get('/posts/admin', 'PostController@postAdmin')->middleware('can:isAdmin')->name('post.admin');
+Route::get('/posts/manager', 'PostController@postManager')->middleware('can:isManager')->name('post.manager');
+Route::get('/posts/user', 'PostController@postUser')->middleware('can:isUser')->name('post.user');
+Route::get('/posts/others', 'PostController@postOthers')->name('post.others');

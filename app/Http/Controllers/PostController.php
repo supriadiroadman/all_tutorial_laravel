@@ -10,10 +10,15 @@ class PostController extends Controller
 {
     public function admin()
     {
+        // / Cara ke pertama
         if (Gate::allows('isAdmin')) {
-            return 'You is admin';
+            return 'You is Admin';
         }
         return abort(401);
+
+        // Cara ke dua
+        // $this->authorize('isAdmin');
+        // your code ...
     }
 
     public function manager()
@@ -32,15 +37,36 @@ class PostController extends Controller
     public function user()
     {
         if (Gate::any(['isUser', 'isAdmin', 'isManager'])) {
-            return 'You is user/ admin/ manager';
+            return 'You is User/ Admin/ Manager';
         }
     }
 
     public function others()
     {
         if (Gate::denies('isUser')) {
-            return "Only user cant see";
+            return "Only user can't see";
         }
         return abort(401);
+    }
+
+
+    public function postAdmin()
+    {
+        return 'You is Admin';
+    }
+
+    public function postManager()
+    {
+        return 'You is Manager';
+    }
+
+    public function postUser()
+    {
+        return 'You is User (gate with middleware)';
+    }
+
+    public function postOthers()
+    {
+        return 'Not protected in middleware';
     }
 }
