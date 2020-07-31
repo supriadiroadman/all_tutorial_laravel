@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
+use App\Imports\ProductsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
@@ -18,5 +19,20 @@ class ProductController extends Controller
     public function export()
     {
         return Excel::download(new ProductsExport, 'invoices.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+
+        $this->validate($request, [
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            Excel::import(new ProductsImport, $file);
+            return redirect()->back()->with(['success' => 'Upload success']);
+        }
+        return redirect()->back()->with(['error' => 'Please choose file before']);
     }
 }
