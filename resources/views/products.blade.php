@@ -16,7 +16,7 @@
 <body>
     <div class="container">
         <div class="row justify-content-center mt-5">
-            <div class="col-md-8">
+            <div class="col">
                 @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
@@ -30,19 +30,33 @@
                 @endif
 
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <a href="/export" class="btn btn-primary mb-3">Export</a>
                     </div>
                     <div class="col-md-5">
                         <form action="{{ url('/import') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <div class="col-sm-10">
+                                <div class="col-sm-6">
                                     <input type="file" class="form-control" name="file">
                                     <p class="text-danger">{{ $errors->first('file') }}</p>
                                 </div>
                                 <div class="form-group row">
                                     <button type="submit" class="btn btn-info">Import</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-5">
+                        <form action="{{ url('/import-queue') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control" name="file">
+                                    <p class="text-danger">{{ $errors->first('file') }}</p>
+                                </div>
+                                <div class="form-group row">
+                                    <button type="submit" class="btn btn-success">Import Queue</button>
                                 </div>
                             </div>
                         </form>

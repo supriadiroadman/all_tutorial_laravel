@@ -20,3 +20,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'ProductController@index');
 Route::get('/export', 'ProductController@export');
 Route::post('/import', 'ProductController@import');
+Route::post('/import-queue', 'ProductController@importQueue');
