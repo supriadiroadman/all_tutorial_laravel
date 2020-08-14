@@ -93,4 +93,52 @@ $(document).ready(function () {
 
     });
 
+
+
+    // DELETE DATA
+    $('body').on('click', '.btn-delete', function (event) {
+        event.preventDefault();
+
+        var me = $(this);
+        var url = me.attr('href');
+        var title = me.attr('title');
+        // csrf_token dari tag di app.blade <meta name="csrf-token" content="o05aocNYuJIhQi6pbjCEvFgDItiakOF4Sb7vjdKq">
+        var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+        swal({
+            title: "Anda yakin menghapus " + title + " ?",
+            text: "Data akan terhapus permanen!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                console.log(willDelete);
+                if (willDelete) {
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: {
+                            '_method': 'DELETE',
+                            '_token': csrf_token
+                        },
+                        success: function (response) {
+                            $('#my-table').DataTable().ajax.reload();
+
+                            swal("Sukses", "Data berhasil dihapus", {
+                                icon: "success",
+                            });
+                        },
+                        error: function (xhr) {
+                            swal("Data gagal dihapus", {
+                                icon: "error",
+                            });
+                        }
+                    });
+
+
+
+                }
+            });
+    });
 });
