@@ -32,48 +32,44 @@ class UserController extends Controller
     }
 
 
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::findOrfail($id);
         return view('users.show', compact('user'));
     }
 
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::findOrfail($id);
         return view('users.edit', compact('user'));
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id
+            'email' => 'required|email|unique:users,email,' . $user->id
         ]);
 
-        $user = User::findOrfail($id);
         $user->update($request->all());
     }
 
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrfail($id);
         $user->delete($user);
     }
 
     public function dataTable()
     {
-        $model = User::query();
-        return DataTables::of($model)
-            ->addColumn('action', function ($model) {
+        $user = User::query();
+        return DataTables::of($user)
+            ->addColumn('action', function ($user) {
                 return view('layouts._action', [
-                    'model'       => $model,
-                    'url_show'    => route('user.show', $model->id),
-                    'url_edit'    => route('user.edit', $model->id),
-                    'url_destroy' => route('user.destroy', $model->id),
+                    'user'        => $user,
+                    'url_show'    => route('user.show', $user->id),
+                    'url_edit'    => route('user.edit', $user->id),
+                    'url_destroy' => route('user.destroy', $user->id),
                 ]);
             })->addIndexColumn()->rawColumns(['action'])->make(true);
     }
