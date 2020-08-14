@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    // MENAMPILKAN MODAL
+    // MENAMPILKAN MODAL CREATE DATA
     $('body').on('click', '.modal-show', function (event) { // Tombol create/ tag a di users.index
         event.preventDefault();
 
@@ -23,19 +23,47 @@ $(document).ready(function () {
     });
 
 
-    // SAVE DATA
+
+    // MENAMPILKAN MODAL EDIT DATA
+    $('body').on('click', '.btn-edit', function (event) {
+        event.preventDefault();
+
+        var me = $(this);
+        url = me.attr('href');
+        title = me.attr('title');
+
+        $('#modal-title').text(title);
+        $('#modal-btn-save').text('Update');
+
+        $.ajax({
+            url: url,
+            dataType: 'html',
+            success: function (response) {
+                $('#modal-body').html(response);
+            }
+        });
+
+        $('#modal').modal('show');
+    });
+
+
+
+    // SAVE/UPDATE DATA
     $('#modal-btn-save').click(function (event) {
         event.preventDefault();
 
-        var form = $('form'),
-            url = form.attr('action'); // route('user.store')
+        var form = $('#modal-body form'); // Panggil tag form yg berada didalam id= modal-body
+        var url = form.attr('action');
+        var method = $('input[name=_method]').val() == undefined ? 'POST' : 'PUT';
+        var text = $('input[name=_method]').val() == undefined ? 'Data berhasil disimpan' : 'Data berhasil diupdate';
 
         form.find('.invalid-feedback').remove(); // hapus tag span yg di append dibawah agar tidak duplikat
         form.find('.form-control').removeClass('is-invalid'); // hapus class dari tag input
 
+
         $.ajax({
             url: url,
-            method: 'POST',
+            method: method,
             data: form.serialize(),
             success: function (response) {
                 form.trigger('reset'); // reset inputan
@@ -44,7 +72,7 @@ $(document).ready(function () {
 
                 swal({
                     title: "Selamat !",
-                    text: "Data berhasil disimpan",
+                    text: text,
                     icon: "success",
                     button: "OK",
                 });

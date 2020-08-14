@@ -40,13 +40,20 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        //
+        $user = User::findOrfail($id);
+        return view('users.edit', compact('user'));
     }
 
 
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id
+        ]);
+
+        $user = User::findOrfail($id);
+        $user->update($request->all());
     }
 
 
