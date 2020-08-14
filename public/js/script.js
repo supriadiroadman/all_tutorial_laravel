@@ -9,7 +9,7 @@ $(document).ready(function () {
         title = me.attr('title'); // Ambil nilai attribute "title"
 
         $('#modal-title').text(title); // ganti text "modal-title"
-        $('#modal-btn-save').text('Create'); // ganti text "modal-btn-save"
+        $('#modal-btn-save').show().text('Create'); // ganti text "modal-btn-save"
 
         $.ajax({
             url: url, // request ke route(user.create)
@@ -33,7 +33,7 @@ $(document).ready(function () {
         title = me.attr('title');
 
         $('#modal-title').text(title);
-        $('#modal-btn-save').text('Update');
+        $('#modal-btn-save').show().text('Update');
 
         $.ajax({
             url: url,
@@ -135,10 +135,32 @@ $(document).ready(function () {
                             });
                         }
                     });
-
-
-
                 }
             });
     });
+
+
+
+    // SHOW DATA
+    $('body').on('click', '.btn-show', function (event) {
+        event.preventDefault();
+
+        var me = $(this);
+        var url = me.attr('href');
+        var title = me.attr('title');
+
+        $('#modal-title').text(title);
+        $('#modal-btn-save').hide();
+
+        $.ajax({
+            url: url,
+            dataType: "html",
+            success: function (response) {
+                $('#modal-body').html(response);
+            }
+        });
+
+        $('#modal').modal('show');
+    });
+
 });
