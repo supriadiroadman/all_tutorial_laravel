@@ -5,7 +5,8 @@
     <div class="card">
         <div class="card-header bg-primary text-white">
             Datatable
-            <a href="#" class="btn btn-success float-right">Create</a>
+            <a href="{{ route('user.create') }}" class="btn btn-success float-right modal-show"
+                title="Create User">Create</a>
         </div>
         <div class="card-body">
             <table class="table" id="my-table">
@@ -17,8 +18,6 @@
                         <th scope="col"></th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
             </table>
         </div>
     </div>
